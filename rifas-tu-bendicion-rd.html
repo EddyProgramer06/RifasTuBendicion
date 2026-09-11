@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rifas Tu Bendición RD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="assets/logo.png" alt="Rifas Tu Bendición RD">
+    </a>
+    <div class="navlinks">
+      <a href="#rifas">Rifas activas</a>
+      <a href="#admin">Administrador</a>
+    </div>
+    <a href="#pago" class="nav-cta">Comprar boleto</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="splash"></div>
+  <div class="splash-red"></div>
+  <div style="position:relative; z-index:1;">
+    <img class="hero-logo" src="assets/logo.png" alt="Rifas Tu Bendición RD — Todo lo puede en Cristo que me fortalece, Filipenses 4:13">
+
+    <div class="hero-actions">
+      <a href="#pago" class="btn-primary">Comprar boletos</a>
+      <a href="#rifas" class="btn-secondary">Ver rifas activas</a>
+    </div>
+
+    <div class="ig-line">Síguenos en Instagram <span>@rifas_tu_bendicion_rd</span></div>
+  </div>
+</section>
+
+<section id="rifas">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Rifas activas</h2>
+      <p>Participa hoy y sé el próximo bendecido. Boletos limitados en cada rifa.</p>
+    </div>
+    <div class="raffle-grid" id="raffle-grid">
+      <!-- Las rifas se generan automáticamente desde el panel de Administrador -->
+    </div>
+  </div>
+</section>
+
+<section id="pago">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Comprar boletos</h2>
+      <p>Elige tu rifa, la cantidad de boletos y el método de pago. Te confirmamos por WhatsApp al instante.</p>
+    </div>
+
+    <div class="pago-box">
+      <div class="pago-grid">
+        <div class="field full">
+          <label for="rifa">Rifa</label>
+          <select id="rifa">
+            <!-- Se llena automáticamente con las rifas activas -->
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="cantidad">Cantidad de boletos</label>
+          <div class="qty-row">
+            <button type="button" class="qty-btn" id="menos">−</button>
+            <input type="number" id="cantidad" value="1" min="1">
+            <button type="button" class="qty-btn" id="mas">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="nombre">Tu nombre</label>
+          <input type="text" id="nombre" placeholder="Nombre y apellido">
+        </div>
+      </div>
+
+      <div class="total-row">
+        <span class="label">Total a pagar</span>
+        <span class="amount" id="total">RD$100</span>
+      </div>
+
+      <div class="field full" style="margin-bottom:16px;">
+        <label>Transferencia bancaria o depósito — elige la cuenta que usaste</label>
+      </div>
+      <div class="pago-methods">
+        <label class="method">
+          <input type="radio" name="cuenta" value="Banreservas" checked>
+          <span class="m-icon">🏦</span> Banreservas
+        </label>
+        <label class="method">
+          <input type="radio" name="cuenta" value="BHD">
+          <span class="m-icon">🏦</span> BHD
+        </label>
+        <label class="method">
+          <input type="radio" name="cuenta" value="Popular">
+          <span class="m-icon">🏦</span> Popular
+        </label>
+      </div>
+
+      <div class="pago-details" id="detalle-banreservas">
+        <div class="row"><span>Banco</span><b>Banreservas</b></div>
+        <div class="row"><span>Cuenta</span><b>9601436816</b></div>
+        <div class="row"><span>A nombre de</span><b>Willy Arias</b></div>
+      </div>
+      <div class="pago-details" id="detalle-bhd" style="display:none;">
+        <div class="row"><span>Banco</span><b>BHD</b></div>
+        <div class="row"><span>Cuenta</span><b>35323520013</b></div>
+        <div class="row"><span>A nombre de</span><b>Willy Arias</b></div>
+      </div>
+      <div class="pago-details" id="detalle-popular" style="display:none;">
+        <div class="row"><span>Banco</span><b>Banco Popular</b></div>
+        <div class="row"><span>Cuenta</span><b>855773792</b></div>
+        <div class="row"><span>A nombre de</span><b>Amy Alejandra Martínez Peña</b></div>
+      </div>
+
+      <button type="button" class="btn-whatsapp" id="btn-confirmar">
+        ✅ Confirmar compra por WhatsApp
+      </button>
+      <div class="pago-note">Después de pagar, envía tu comprobante para reservar tus números.</div>
+    </div>
+  </div>
+</section>
+
+<section id="admin" style="background:var(--panel-2); border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Panel de administrador</h2>
+      <p>Solo para el equipo de Rifas Tu Bendición RD: sube, edita o elimina las rifas activas, sus precios e imágenes.</p>
+    </div>
+
+    <div id="admin-locked" class="admin-box" style="max-width:420px; text-align:center;">
+      <div class="field full">
+        <label for="admin-pass">Contraseña de administrador</label>
+        <input type="password" id="admin-pass" placeholder="••••••••">
+      </div>
+      <button type="button" class="btn-whatsapp" id="admin-login" style="margin-top:14px;">Entrar</button>
+      <div class="pago-note" id="admin-error" style="color:var(--red); display:none;">Contraseña incorrecta.</div>
+    </div>
+
+    <div id="admin-panel" class="admin-box" style="display:none;">
+      <h3 id="admin-form-title" style="font-family:'Manrope',sans-serif; font-weight:800; text-transform:none; font-size:17px; margin-bottom:18px;">Agregar nueva rifa</h3>
+
+      <div class="pago-grid">
+        <div class="field full">
+          <label for="a-nombre">Nombre del premio</label>
+          <input type="text" id="a-nombre" placeholder="Ej: RD$50,000 en efectivo">
+        </div>
+        <div class="field">
+          <label for="a-precio">Precio por boleto (RD$)</label>
+          <input type="number" id="a-precio" value="200" min="1">
+        </div>
+        <div class="field">
+          <label for="a-etiqueta">Etiqueta</label>
+          <select id="a-etiqueta">
+            <option>NUEVA</option>
+            <option>CIERRA PRONTO</option>
+            <option>ÚLTIMOS BOLETOS</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="a-total">Total de boletos</label>
+          <input type="number" id="a-total" placeholder="280" min="1">
+        </div>
+        <div class="field">
+          <label for="a-vendidos">Boletos vendidos</label>
+          <input type="number" id="a-vendidos" placeholder="0" min="0">
+        </div>
+        <div class="field full">
+          <label for="a-imagen">Imagen de la rifa (opcional)</label>
+          <input type="file" id="a-imagen" accept="image/*">
+          <div id="a-imagen-preview"></div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button type="button" class="btn-whatsapp" id="admin-agregar" style="flex:1;">➕ Publicar rifa</button>
+        <button type="button" class="btn-secondary" id="admin-cancelar-edicion" style="display:none; border-color:rgba(255,255,255,0.2);">Cancelar</button>
+      </div>
+
+      <h3 style="font-family:'Manrope',sans-serif; font-weight:800; text-transform:none; font-size:17px; margin:32px 0 16px;">Rifas publicadas</h3>
+      <div id="admin-lista"></div>
+
+      <button type="button" class="btn-secondary" id="admin-logout" style="margin-top:24px; width:100%; text-align:center; border-color:rgba(255,255,255,0.2);">Cerrar sesión</button>
+    </div>
+  </div>
+</section>
+
+<div class="verse-strip">
+  <p>Cada rifa es una oportunidad, pero la <span class="accent">bendición</span> viene de Dios.</p>
+  
+</div>
+
+<footer id="contacto">
+  <div class="foot-brand">RIFAS TU BENDICIÓN RD</div>
+  <a href="https://instagram.com/rifas_tu_bendicion_rd" class="foot-ig">
+    <span class="ig-badge">📷</span> @rifas_tu_bendicion_rd
+  </a>
+  <div class="foot-links">
+    <a href="#rifas">Rifas activas</a>
+    <a href="#pago">Comprar boletos</a>
+    <a href="#admin">Administrador</a>
+  </div>
+  <div class="foot-fine">Todo lo puede en Cristo que me fortalece — Filipenses 4:13</div>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
