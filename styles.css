@@ -512,7 +512,7 @@
   }
   .a-edit:hover{ background:rgba(255,176,32,0.22); }
 
-  /* ---------- Responsive ---------- */
+  /* ---------- Responsive (tablet / 900px) ---------- */
   @media (max-width:900px){
     .navlinks{ gap:14px; font-size:12.5px; flex-wrap:wrap; justify-content:center; }
     nav{ flex-wrap:wrap; row-gap:10px; justify-content:center; }
@@ -522,6 +522,44 @@
     .pago-grid{ grid-template-columns:1fr; }
     .pago-methods{ grid-template-columns:1fr; }
     .pago-box, .admin-box{ padding:26px; }
+  }
+
+  /* ---------- Responsive (celular / 600px) ---------- */
+  @media (max-width:600px){
+    .wrap{ padding:0 18px; }
+
+    .hero{ padding:50px 18px 60px; }
+    .hero-actions{ flex-direction:column; align-items:center; }
+    .btn-primary, .btn-secondary{ width:100%; max-width:280px; text-align:center; }
+
+    .section-head p{ padding:0 10px; }
+    .verse-strip{ padding:44px 18px; }
+    .verse-strip p{ font-size:clamp(18px,6vw,24px); }
+
+    .steps{ grid-template-columns:1fr; }
+
+    .winner-top{ flex-wrap:wrap; }
+
+    .pago-box, .admin-box{ padding:20px; }
+    .pago-methods{ grid-template-columns:1fr; }
+    .method{ text-align:left; display:flex; align-items:center; gap:10px; }
+    .method .m-icon{ margin-bottom:0; }
+
+    .qty-row{ flex-wrap:wrap; }
+
+    .total-row{ flex-direction:column; align-items:flex-start; gap:4px; }
+
+    .admin-item{ flex-wrap:wrap; gap:10px; }
+    .admin-item .a-del, .a-edit{ margin-right:0; }
+
+    .foot-links{ gap:14px 20px; }
+  }
+
+  /* ---------- Responsive (celular chico / 380px) ---------- */
+  @media (max-width:380px){
+    .brand{ font-size:18px; }
+    .nav-cta{ padding:8px 14px; font-size:13px; }
+    .total-row .amount{ font-size:24px; }
   }
 
   @media (prefers-reduced-motion: reduce){
